@@ -23,6 +23,8 @@ And so on.
 Also, some C++ libraries (other than the standard library) that implement a string type include such methods.  
 For example, Qt library has classes QString [<sup>4</sup>](#qstring) and QStringRef (analogous to std::string_view) which have contains member functions.
 
+The teachability of C++ for people coming from other languages might improve, because they are already familiar with the `contains` function in a string type.
+
 ### 2.2. Why not find != npos?
 The 'standard' [<sup>5</sup>](#contains_so) way of checking if a string contains a substring is to use the `find` member function.
 ```
@@ -40,6 +42,8 @@ A `contains` member function would make the intention of the programmer more cle
 if (str.contains(substr))
 	std::cout << "found!" << '\n';
 ```
+The proposed change would improve teachability of C++ for beginners as the `contains` function better matches the intention of the programmer.
+And because it is a simpler construct to write and remember than using `find`.
 
 ### 2.3. Three string checking Musketeers
 The string `contains` function would complete the three string checking musketeers, together with the string prefix and suffix check, `starts_with` and `ends_with` [<sup>6</sup>](#string_checks).

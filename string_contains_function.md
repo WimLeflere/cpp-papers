@@ -1,4 +1,4 @@
-Document number: P1679R0  
+Document number: P1679R1  
 Date: 2019-05-26  
 Project: WG21, Library Working Group  
 Author: Wim Leflere <wim.leflere@gmail.com>
@@ -12,6 +12,8 @@ This function checks, whether or not a string contains a given substring.
 ## 2. History
 ### 2.1. R0
 Initial version
+### 2.2. R1
+Wording added
 
 ## 3. Motivation
 Checking, whether or not a given string contains a given substring is a common task, that is missing from the standard library.
@@ -80,7 +82,9 @@ constexpr bool contains(basic_string_view<charT, traits> str) const noexcept;
 constexpr bool contains(const charT* str) const;
 ```
 
-## 5. References
+## 5. Wording
+
+## 6. References
 1. <a name="java_string"></a>
 Java™ Standard Edition 10 API. Class String, https://docs.oracle.com/javase/10/docs/api/java/lang/String.html#contains(java.lang.CharSequence)
 2. <a name="csharp_string"></a>

@@ -9,10 +9,14 @@ Author: Wim Leflere <wim.leflere@gmail.com>
 This paper proposes to add member function `contains` to class templates basic_string and basic_string_view.
 This function checks, whether or not a string contains a given substring.
 
-## 2. Motivation
+## 2. History
+### 2.1. R0
+Initial version
+
+## 3. Motivation
 Checking, whether or not a given string contains a given substring is a common task, that is missing from the standard library.
 
-### 2.1. Other (standard) libraries
+### 3.1. Other (standard) libraries
 Standard libraries of many other programming languages include routines for performing such a check, for example:
 * Java: class String contains method [<sup>1</sup>](#java_string)
 * C#: class String Contains method [<sup>2</sup>](#csharp_string)
@@ -25,7 +29,7 @@ For example, Qt library has classes QString [<sup>4</sup>](#qstring) and QString
 
 The teachability of C++ for people coming from other languages might improve, because they are already familiar with the `contains` function in a string type.
 
-### 2.2. Why not find != npos?
+### 3.2. Why not find != npos?
 The 'standard' [<sup>5</sup>](#contains_so) way of checking if a string contains a substring is to use the `find` member function.
 ```
 if (str.find(substr) != std::string::npos)
@@ -45,17 +49,17 @@ if (str.contains(substr))
 The proposed change would improve teachability of C++ for beginners as the `contains` function better matches the intention of the programmer.
 And because it is a simpler construct to write and remember than using `find`.
 
-### 2.3. Three string checking Musketeers
+### 3.3. Three string checking Musketeers
 The string `contains` function would complete the three string checking musketeers, together with the string prefix and suffix check, `starts_with` and `ends_with` [<sup>6</sup>](#string_checks).
 
-## 3. Design considerations
+## 4. Design considerations
 
-### 3.1. Member function vs free function
+### 4.1. Member function vs free function
 This proposal adds member function `contains` to class templates basic_string and basic_string_view.  
 Another considered option was to add a free function `contains` to namespace std, as in Boost [<sup>7</sup>](#boost_contains).   
 The drawback of a free function is that the order of parameters of a free function is ambiguous, `contains(string, substring)` vs `contains(substring, string)`.
 
-### 3.2. Overload set
+### 4.2. Overload set
 Qt offers the following overload set (for QString and QStringRef):
 ```
 bool contains(const QString &str, Qt::CaseSensitivity cs = ...) const
@@ -76,7 +80,7 @@ constexpr bool contains(basic_string_view<charT, traits> str) const noexcept;
 constexpr bool contains(const charT* str) const;
 ```
 
-## 4. References
+## 5. References
 1. <a name="java_string"></a>
 Java™ Standard Edition 10 API. Class String, https://docs.oracle.com/javase/10/docs/api/java/lang/String.html#contains(java.lang.CharSequence)
 2. <a name="csharp_string"></a>

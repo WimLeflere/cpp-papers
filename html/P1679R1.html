@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>String Contains function</title>
+  <style>
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+  <style type="text/css">
+  /* https://gist.github.com/andyferra/2554919 */
+  body {
+    font-family: Helvetica, arial, sans-serif;
+    font-size: 14px;
+    line-height: 1.6;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    background-color: white;
+    padding: 30px; }
+  
+  body > *:first-child {
+    margin-top: 0 !important; }
+  body > *:last-child {
+    margin-bottom: 0 !important; }
+  
+  a {
+    color: #4183C4; }
+  a.absent {
+    color: #cc0000; }
+  a.anchor {
+    display: block;
+    padding-left: 30px;
+    margin-left: -30px;
+    cursor: pointer;
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0; }
+  
+  h1, h2, h3, h4, h5, h6 {
+    margin: 20px 0 10px;
+    padding: 0;
+    font-weight: bold;
+    -webkit-font-smoothing: antialiased;
+    cursor: text;
+    position: relative; }
+  
+  h1:hover a.anchor, h2:hover a.anchor, h3:hover a.anchor, h4:hover a.anchor, h5:hover a.anchor, h6:hover a.anchor {
+    text-decoration: none; }
+  
+  h1 tt, h1 code {
+    font-size: inherit; }
+  
+  h2 tt, h2 code {
+    font-size: inherit; }
+  
+  h3 tt, h3 code {
+    font-size: inherit; }
+  
+  h4 tt, h4 code {
+    font-size: inherit; }
+  
+  h5 tt, h5 code {
+    font-size: inherit; }
+  
+  h6 tt, h6 code {
+    font-size: inherit; }
+  
+  h1 {
+    font-size: 28px;
+    color: black; }
+  
+  h2 {
+    font-size: 24px;
+    border-bottom: 1px solid #cccccc;
+    color: black; }
+  
+  h3 {
+    font-size: 18px; }
+  
+  h4 {
+    font-size: 16px; }
+  
+  h5 {
+    font-size: 14px; }
+  
+  h6 {
+    color: #777777;
+    font-size: 14px; }
+  
+  hr {
+    border: 0 none;
+    color: #cccccc;
+    height: 4px;
+    padding: 0; }
+  
+  body > h2:first-child {
+    margin-top: 0;
+    padding-top: 0; }
+  body > h1:first-child {
+    margin-top: 0;
+    padding-top: 0; }
+    body > h1:first-child + h2 {
+      margin-top: 0;
+      padding-top: 0; }
+  body > h3:first-child, body > h4:first-child, body > h5:first-child, body > h6:first-child {
+    margin-top: 0;
+    padding-top: 0; }
+  
+  a:first-child h1, a:first-child h2, a:first-child h3, a:first-child h4, a:first-child h5, a:first-child h6 {
+    margin-top: 0;
+    padding-top: 0; }
+  
+  h1 p, h2 p, h3 p, h4 p, h5 p, h6 p {
+    margin-top: 0; }
+  
+  li p.first {
+    display: inline-block; }
+  
+  ul, ol {
+    padding-left: 30px; }
+  
+  ul :first-child, ol :first-child {
+    margin-top: 0; }
+  
+  ul :last-child, ol :last-child {
+    margin-bottom: 0; }
+  
+  dl {
+    padding: 0; }
+    dl dt {
+      font-size: 14px;
+      font-weight: bold;
+      font-style: italic;
+      padding: 0;
+      margin: 15px 0 5px; }
+      dl dt:first-child {
+        padding: 0; }
+      dl dt > :first-child {
+        margin-top: 0; }
+      dl dt > :last-child {
+        margin-bottom: 0; }
+    dl dd {
+      margin: 0 0 15px;
+      padding: 0 15px; }
+      dl dd > :first-child {
+        margin-top: 0; }
+      dl dd > :last-child {
+        margin-bottom: 0; }
+  
+  blockquote {
+    border-left: 4px solid #dddddd;
+    padding: 0 15px;
+    color: #777777; }
+    blockquote > :first-child {
+      margin-top: 0; }
+    blockquote > :last-child {
+      margin-bottom: 0; }
+  
+  table {
+    padding: 0; }
+    table tr {
+      border-top: 1px solid #cccccc;
+      background-color: white;
+      margin: 0;
+      padding: 0; }
+      table tr:nth-child(2n) {
+        background-color: #f8f8f8; }
+      table tr th {
+        font-weight: bold;
+        border: 1px solid #cccccc;
+        text-align: left;
+        margin: 0;
+        padding: 6px 13px; }
+      table tr td {
+        border: 1px solid #cccccc;
+        text-align: left;
+        margin: 0;
+        padding: 6px 13px; }
+      table tr th :first-child, table tr td :first-child {
+        margin-top: 0; }
+      table tr th :last-child, table tr td :last-child {
+        margin-bottom: 0; }
+  
+  img {
+    max-width: 100%; }
+  
+  span.frame {
+    display: block;
+    overflow: hidden; }
+    span.frame > span {
+      border: 1px solid #dddddd;
+      display: block;
+      float: left;
+      overflow: hidden;
+      margin: 13px 0 0;
+      padding: 7px;
+      width: auto; }
+    span.frame span img {
+      display: block;
+      float: left; }
+    span.frame span span {
+      clear: both;
+      color: #333333;
+      display: block;
+      padding: 5px 0 0; }
+  span.align-center {
+    display: block;
+    overflow: hidden;
+    clear: both; }
+    span.align-center > span {
+      display: block;
+      overflow: hidden;
+      margin: 13px auto 0;
+      text-align: center; }
+    span.align-center span img {
+      margin: 0 auto;
+      text-align: center; }
+  span.align-right {
+    display: block;
+    overflow: hidden;
+    clear: both; }
+    span.align-right > span {
+      display: block;
+      overflow: hidden;
+      margin: 13px 0 0;
+      text-align: right; }
+    span.align-right span img {
+      margin: 0;
+      text-align: right; }
+  span.float-left {
+    display: block;
+    margin-right: 13px;
+    overflow: hidden;
+    float: left; }
+    span.float-left span {
+      margin: 13px 0 0; }
+  span.float-right {
+    display: block;
+    margin-left: 13px;
+    overflow: hidden;
+    float: right; }
+    span.float-right > span {
+      display: block;
+      overflow: hidden;
+      margin: 13px auto 0;
+      text-align: right; }
+  
+  code, tt {
+    margin: 0 2px;
+    padding: 0 5px;
+    white-space: nowrap;
+    border: 1px solid #eaeaea;
+    background-color: #f8f8f8;
+    border-radius: 3px; }
+  
+  pre code {
+    margin: 0;
+    padding: 0;
+    white-space: pre;
+    border: none;
+    background: transparent; }
+  
+  .highlight pre {
+    background-color: #f8f8f8;
+    border: 1px solid #cccccc;
+    font-size: 13px;
+    line-height: 19px;
+    overflow: auto;
+    padding: 6px 10px;
+    border-radius: 3px; }
+  
+  pre {
+    background-color: #f8f8f8;
+    border: 1px solid #cccccc;
+    font-size: 13px;
+    line-height: 19px;
+    overflow: auto;
+    padding: 6px 10px;
+    border-radius: 3px; }
+    pre code, pre tt {
+      background-color: transparent;
+      border: none; }
+  </style>
+</head>
+<body>
+<p>Document number: P1679R1<br />
+Date: 2019-05-26<br />
+Project: WG21, Library Working Group<br />
+Author: Wim Leflere <a href="mailto:wim.leflere@gmail.com">wim.leflere@gmail.com</a></p>
+<h1 id="string-contains-function">String Contains function</h1>
+<h2 id="1-abstract">1. Abstract</h2>
+<p>This paper proposes to add member function <code>contains</code> to class templates basic_string and basic_string_view. This function checks, whether or not a string contains a given substring.</p>
+<h2 id="2-history">2. History</h2>
+<h3 id="21-r0">2.1. R0</h3>
+<p>Initial version</p>
+<h3 id="22-r1">2.2. R1</h3>
+<p>Wording added</p>
+<h2 id="3-motivation">3. Motivation</h2>
+<p>Checking, whether or not a given string contains a given substring is a common task, that is missing from the standard library.</p>
+<h3 id="31-other-standard-libraries">3.1. Other (standard) libraries</h3>
+<p>Standard libraries of many other programming languages include routines for performing such a check, for example:</p>
+<ul>
+<li>Java: class String contains method <a href="#java_string"><sup>1</sup></a></li>
+<li>C#: class String Contains method <a href="#csharp_string"><sup>2</sup></a></li>
+<li>Rust: class string contains method <a href="#rust_string"><sup>3</sup></a></li>
+</ul>
+<p>And so on.</p>
+<p>Also, some C++ libraries (other than the standard library) that implement a string type include such methods.<br />
+For example, Qt library has classes QString <a href="#qstring"><sup>4</sup></a> and QStringRef (analogous to std::string_view) which have contains member functions.</p>
+<p>The teachability of C++ for people coming from other languages might improve, because they are already familiar with the <code>contains</code> function in a string type.</p>
+<h3 id="32-why-not-find--npos">3.2. Why not find != npos?</h3>
+<p>The 'standard' <a href="#contains_so"><sup>5</sup></a> way of checking if a string contains a substring is to use the <code>find</code> member function.</p>
+<pre><code>if (str.find(substr) != std::string::npos)
+    std::cout &lt;&lt; &quot;found!&quot; &lt;&lt; &#39;\n&#39;;
+</code></pre>
+<p>But using <code>find</code> requires that one extra step of thinking when writing it.<br />
+You're trying to do something positive (check if contains) but you have to do something negative (check inequality).</p>
+<p>And one extra step when reading the code.<br />
+Are we looking for the actual position? Or checking if the string contains a substring? Or checking if the string doesn't contain a substring?</p>
+<p>A <code>contains</code> member function would make the intention of the programmer more clear and make the code more readable.</p>
+<pre><code>if (str.contains(substr))
+    std::cout &lt;&lt; &quot;found!&quot; &lt;&lt; &#39;\n&#39;;
+</code></pre>
+<p>The proposed change would improve teachability of C++ for beginners as the <code>contains</code> function better matches the intention of the programmer. And because it is a simpler construct to write and remember than using <code>find</code>.</p>
+<h3 id="33-three-string-checking-musketeers">3.3. Three string checking Musketeers</h3>
+<p>The string <code>contains</code> function would complete the three string checking musketeers, together with the string prefix and suffix check, <code>starts_with</code> and <code>ends_with</code> <a href="#string_checks"><sup>6</sup></a>.</p>
+<h2 id="4-design-considerations">4. Design considerations</h2>
+<h3 id="41-member-function-vs-free-function">4.1. Member function vs free function</h3>
+<p>This proposal adds member function <code>contains</code> to class templates basic_string and basic_string_view.<br />
+Another considered option was to add a free function <code>contains</code> to namespace std, as in Boost <a href="#boost_contains"><sup>7</sup></a>.<br />
+The drawback of a free function is that the order of parameters of a free function is ambiguous, <code>contains(string, substring)</code> vs <code>contains(substring, string)</code>.</p>
+<h3 id="42-overload-set">4.2. Overload set</h3>
+<p>Qt offers the following overload set (for QString and QStringRef):</p>
+<pre><code>bool contains(const QString &amp;str, Qt::CaseSensitivity cs = ...) const
+bool contains(QChar ch, Qt::CaseSensitivity cs = ...) const
+bool contains(QLatin1String str, Qt::CaseSensitivity cs = ...) const
+bool contains(const QStringRef &amp;str, Qt::CaseSensitivity cs = ...) const
+</code></pre>
+<p>This proposal includes the following overloads:</p>
+<pre><code>// basic_string:
+bool contains(basic_string_view&lt;charT, traits&gt; str) const noexcept;
+bool contains(charT ch) const noexcept;
+bool contains(const charT* str) const;
+
+// basic_string_view:
+constexpr bool contains(basic_string_view&lt;charT, traits&gt; str) const noexcept;
+constexpr bool contains(charT ch) const noexcept;
+constexpr bool contains(const charT* str) const;
+</code></pre>
+<h2 id="5-wording">5. Wording</h2>
+<h3 id="51-basic_string">5.1. basic_string</h3>
+<p>In [basic.string], add:</p>
+<pre><code>bool contains(basic_string_view&lt;charT, traits&gt; x) const noexcept;
+bool contains(charT x) const noexcept;
+bool contains(const charT* x) const;
+</code></pre>
+<p>After [string::ends_with], add:</p>
+<pre><code>basic_string::contains [string::contains]
+
+bool contains(basic_string_view&lt;charT, traits&gt; x) const noexcept;
+bool contains(charT x) const noexcept;
+bool contains(const charT* x) const;
+</code></pre>
+<p>Effects: Equivalent to: <code>return basic_string_view&lt;charT, traits&gt;(data(), size()).contains(x);</code></p>
+<h3 id="52-basic_string_view">5.2. basic_string_view</h3>
+<p>In [string.view.template], add:</p>
+<pre><code>constexpr bool contains(basic_string_view&lt;charT, traits&gt; x) const noexcept;
+constexpr bool contains(charT x) const noexcept;
+constexpr bool contains(const charT* x) const;
+</code></pre>
+<p>In [string.view.ops], add:</p>
+<pre><code>constexpr bool contains(basic_string_view&lt;charT, traits&gt; x) const noexcept;
+</code></pre>
+<p>Effects: Equivalent to: <code>return find(x) != npos;</code></p>
+<pre><code>constexpr bool contains(charT x) const noexcept;
+</code></pre>
+<p>Effects: Equivalent to: <code>return contains(basic_string_view(&amp;x, 1));</code></p>
+<pre><code>constexpr bool contains(const charT* x) const;
+</code></pre>
+<p>Effects: Equivalent to: <code>return contains(basic_string_view(x));</code></p>
+<h2 id="6-references">6. References</h2>
+<ol>
+<li><a name="java_string"></a> Java™ Standard Edition 10 API. Class String, <a href="https://docs.oracle.com/javase/10/docs/api/java/lang/String.html#contains(java.lang.CharSequence)">https://docs.oracle.com/javase/10/docs/api/java/lang/String.html#contains(java.lang.CharSequence)</a></li>
+<li><a name="csharp_string"></a> .NET Core 2.2 API. String.Contains Method, <a href="https://docs.microsoft.com/en-us/dotnet/api/system.string.contains?view=netcore-2.2">https://docs.microsoft.com/en-us/dotnet/api/system.string.contains?view=netcore-2.2</a></li>
+<li><a name="rust_string"></a> Rust 1.0 API. Struct std::string::String, <a href="https://doc.rust-lang.org/std/string/struct.String.html#method.contains">https://doc.rust-lang.org/std/string/struct.String.html#method.contains</a></li>
+<li><a name="qstring"></a> Qt 5.12 documentation. QString Class, <a href="https://doc.qt.io/qt-5/qstring.html#contains">https://doc.qt.io/qt-5/qstring.html#contains</a></li>
+<li><a name="contains_so"></a> StackOverflow. C++ string contains, <a href="https://stackoverflow.com/questions/2340281/check-if-a-string-contains-a-string-in-c/2340309#2340309">https://stackoverflow.com/questions/2340281/check-if-a-string-contains-a-string-in-c/2340309#2340309</a></li>
+<li><a name="string_checks"></a> WG21 P0457R2. String Prefix and Suffix Checking, <a href="http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2017/p0457r2">http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2017/p0457r2</a></li>
+<li><a name="boost_contains"></a> Boost 1.70.0 documentation. boost::algorithm::contains function, <a href="https://www.boost.org/doc/libs/1_70_0/doc/html/boost/algorithm/contains.html">https://www.boost.org/doc/libs/1_70_0/doc/html/boost/algorithm/contains.html</a></li>
+</ol>
+</body>
+</html>

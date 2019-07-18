@@ -72,13 +72,13 @@ bool contains(const QStringRef &str, Qt::CaseSensitivity cs = ...) const
 This proposal includes the following overloads:
 ```
 // basic_string:
-bool contains(charT ch) const noexcept;
 bool contains(basic_string_view<charT, traits> str) const noexcept;
+bool contains(charT ch) const noexcept;
 bool contains(const charT* str) const;
 
 // basic_string_view:
-constexpr bool contains(charT ch) const noexcept;
 constexpr bool contains(basic_string_view<charT, traits> str) const noexcept;
+constexpr bool contains(charT ch) const noexcept;
 constexpr bool contains(const charT* str) const;
 ```
 
@@ -86,17 +86,17 @@ constexpr bool contains(const charT* str) const;
 ### 5.1. basic_string
 In [basic.string], add:
 ```
-bool contains(charT x) const noexcept;
 bool contains(basic_string_view<charT, traits> x) const noexcept;
+bool contains(charT x) const noexcept;
 bool contains(const charT* x) const;
 ```
 
 After [string::ends_with], add:
 ```
-basic_string::contains [string.contains]
+basic_string::contains [string::contains]
 
-bool contains(charT x) const noexcept;
 bool contains(basic_string_view<charT, traits> x) const noexcept;
+bool contains(charT x) const noexcept;
 bool contains(const charT* x) const;
 ```
 Effects: Equivalent to: `return basic_string_view<charT, traits>(data(), size()).contains(x);`
@@ -104,21 +104,21 @@ Effects: Equivalent to: `return basic_string_view<charT, traits>(data(), size())
 ### 5.2. basic_string_view
 In [string.view.template], add:
 ```
-constexpr bool contains(charT x) const noexcept;
 constexpr bool contains(basic_string_view<charT, traits> x) const noexcept;
+constexpr bool contains(charT x) const noexcept;
 constexpr bool contains(const charT* x) const;
 ```
 
 In [string.view.ops], add:
 ```
-constexpr bool contains(charT x) const noexcept;
-```
-Effects: Equivalent to: `return contains(basic_string_view(&x, 1));`
-
-```
 constexpr bool contains(basic_string_view<charT, traits> x) const noexcept;
 ```
 Effects: Equivalent to: `return find(x) != npos;`
+
+```
+constexpr bool contains(charT x) const noexcept;
+```
+Effects: Equivalent to: `return contains(basic_string_view(&x, 1));`
 
 ```
 constexpr bool contains(const charT* x) const;

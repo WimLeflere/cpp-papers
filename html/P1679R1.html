@@ -299,25 +299,26 @@ Author: Wim Leflere <a href="mailto:wim.leflere@gmail.com">wim.leflere@gmail.com
 <h2 id="1-abstract">1. Abstract</h2>
 <p>This paper proposes to add member function <code>contains</code> to class templates basic_string and basic_string_view. This function checks, whether or not a string contains a given substring.</p>
 <h2 id="2-history">2. History</h2>
+<h3 id="22-r1">2.2. R1</h3>
+<p>Wording added<br />
+Made all functions constexpr, after <code>std::string</code> was made constexpr <a href="#constexpr_string"><sup>1</sup></a></p>
 <h3 id="21-r0">2.1. R0</h3>
 <p>Initial version</p>
-<h3 id="22-r1">2.2. R1</h3>
-<p>Wording added</p>
 <h2 id="3-motivation">3. Motivation</h2>
 <p>Checking, whether or not a given string contains a given substring is a common task, that is missing from the standard library.</p>
 <h3 id="31-other-standard-libraries">3.1. Other (standard) libraries</h3>
 <p>Standard libraries of many other programming languages include routines for performing such a check, for example:</p>
 <ul>
-<li>Java: class String contains method <a href="#java_string"><sup>1</sup></a></li>
-<li>C#: class String Contains method <a href="#csharp_string"><sup>2</sup></a></li>
-<li>Rust: class string contains method <a href="#rust_string"><sup>3</sup></a></li>
+<li>Java: class String contains method <a href="#java_string"><sup>2</sup></a></li>
+<li>C#: class String Contains method <a href="#csharp_string"><sup>3</sup></a></li>
+<li>Rust: class string contains method <a href="#rust_string"><sup>4</sup></a></li>
 </ul>
 <p>And so on.</p>
 <p>Also, some C++ libraries (other than the standard library) that implement a string type include such methods.<br />
-For example, Qt library has classes QString <a href="#qstring"><sup>4</sup></a> and QStringRef (analogous to std::string_view) which have contains member functions.</p>
+For example, Qt library has classes QString <a href="#qstring"><sup>5</sup></a> and QStringRef (analogous to std::string_view) which have contains member functions.</p>
 <p>The teachability of C++ for people coming from other languages might improve, because they are already familiar with the <code>contains</code> function in a string type.</p>
 <h3 id="32-why-not-find--npos">3.2. Why not find != npos?</h3>
-<p>The 'standard' <a href="#contains_so"><sup>5</sup></a> way of checking if a string contains a substring is to use the <code>find</code> member function.</p>
+<p>The 'standard' <a href="#contains_so"><sup>6</sup></a> way of checking if a string contains a substring is to use the <code>find</code> member function.</p>
 <pre><code>if (str.find(substr) != std::string::npos)
     std::cout &lt;&lt; &quot;found!&quot; &lt;&lt; &#39;\n&#39;;
 </code></pre>
@@ -331,11 +332,11 @@ Are we looking for the actual position? Or checking if the string contains a sub
 </code></pre>
 <p>The proposed change would improve teachability of C++ for beginners as the <code>contains</code> function better matches the intention of the programmer. And because it is a simpler construct to write and remember than using <code>find</code>.</p>
 <h3 id="33-three-string-checking-musketeers">3.3. Three string checking Musketeers</h3>
-<p>The string <code>contains</code> function would complete the three string checking musketeers, together with the string prefix and suffix check, <code>starts_with</code> and <code>ends_with</code> <a href="#string_checks"><sup>6</sup></a>.</p>
+<p>The string <code>contains</code> function would complete the three string checking musketeers, together with the string prefix and suffix check, <code>starts_with</code> and <code>ends_with</code> <a href="#string_checks"><sup>7</sup></a>.</p>
 <h2 id="4-design-considerations">4. Design considerations</h2>
 <h3 id="41-member-function-vs-free-function">4.1. Member function vs free function</h3>
 <p>This proposal adds member function <code>contains</code> to class templates basic_string and basic_string_view.<br />
-Another considered option was to add a free function <code>contains</code> to namespace std, as in Boost <a href="#boost_contains"><sup>7</sup></a>.<br />
+Another considered option was to add a free function <code>contains</code> to namespace std, as in Boost <a href="#boost_contains"><sup>8</sup></a>.<br />
 The drawback of a free function is that the order of parameters of a free function is ambiguous, <code>contains(string, substring)</code> vs <code>contains(substring, string)</code>.</p>
 <h3 id="42-overload-set">4.2. Overload set</h3>
 <p>Qt offers the following overload set (for QString and QStringRef):</p>
@@ -346,9 +347,9 @@ bool contains(const QStringRef &amp;str, Qt::CaseSensitivity cs = ...) const
 </code></pre>
 <p>This proposal includes the following overloads:</p>
 <pre><code>// basic_string:
-bool contains(basic_string_view&lt;charT, traits&gt; str) const noexcept;
-bool contains(charT ch) const noexcept;
-bool contains(const charT* str) const;
+constexpr bool contains(basic_string_view&lt;charT, traits&gt; str) const noexcept;
+constexpr bool contains(charT ch) const noexcept;
+constexpr bool contains(const charT* str) const;
 
 // basic_string_view:
 constexpr bool contains(basic_string_view&lt;charT, traits&gt; str) const noexcept;
@@ -358,16 +359,16 @@ constexpr bool contains(const charT* str) const;
 <h2 id="5-wording">5. Wording</h2>
 <h3 id="51-basic_string">5.1. basic_string</h3>
 <p>In [basic.string], add:</p>
-<pre><code>bool contains(basic_string_view&lt;charT, traits&gt; x) const noexcept;
-bool contains(charT x) const noexcept;
-bool contains(const charT* x) const;
+<pre><code>constexpr bool contains(basic_string_view&lt;charT, traits&gt; x) const noexcept;
+constexpr bool contains(charT x) const noexcept;
+constexpr bool contains(const charT* x) const;
 </code></pre>
 <p>After [string::ends_with], add:</p>
 <pre><code>basic_string::contains [string::contains]
 
-bool contains(basic_string_view&lt;charT, traits&gt; x) const noexcept;
-bool contains(charT x) const noexcept;
-bool contains(const charT* x) const;
+constexpr bool contains(basic_string_view&lt;charT, traits&gt; x) const noexcept;
+constexpr bool contains(charT x) const noexcept;
+constexpr bool contains(const charT* x) const;
 </code></pre>
 <p>Effects: Equivalent to: <code>return basic_string_view&lt;charT, traits&gt;(data(), size()).contains(x);</code></p>
 <h3 id="52-basic_string_view">5.2. basic_string_view</h3>
@@ -388,6 +389,7 @@ constexpr bool contains(const charT* x) const;
 <p>Effects: Equivalent to: <code>return contains(basic_string_view(x));</code></p>
 <h2 id="6-references">6. References</h2>
 <ol>
+<li><a name="constexpr_string"></a> WG21 P0980R0. Making std::string constexpr, <a href="http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2018/p0980r0.pdf">http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2018/p0980r0.pdf</a></li>
 <li><a name="java_string"></a> Java™ Standard Edition 10 API. Class String, <a href="https://docs.oracle.com/javase/10/docs/api/java/lang/String.html#contains(java.lang.CharSequence)">https://docs.oracle.com/javase/10/docs/api/java/lang/String.html#contains(java.lang.CharSequence)</a></li>
 <li><a name="csharp_string"></a> .NET Core 2.2 API. String.Contains Method, <a href="https://docs.microsoft.com/en-us/dotnet/api/system.string.contains?view=netcore-2.2">https://docs.microsoft.com/en-us/dotnet/api/system.string.contains?view=netcore-2.2</a></li>
 <li><a name="rust_string"></a> Rust 1.0 API. Struct std::string::String, <a href="https://doc.rust-lang.org/std/string/struct.String.html#method.contains">https://doc.rust-lang.org/std/string/struct.String.html#method.contains</a></li>

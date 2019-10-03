@@ -123,9 +123,9 @@ constexpr bool contains(charT x) const noexcept;
 constexpr bool contains(const charT* x) const;
 ```
 
-After [string::ends_with], add:
+After [string.ends.with], add:
 ```
-basic_string::contains [string::contains]
+basic_string::contains [string.contains]
 
 constexpr bool contains(basic_string_view<charT, traits> x) const noexcept;
 constexpr bool contains(charT x) const noexcept;

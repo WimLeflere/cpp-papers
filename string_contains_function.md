@@ -177,24 +177,24 @@ Effects: Equivalent to: `return contains(basic_string_view(x));`
 
 ## 6. References
 1. <a name="constexpr_string"></a>
-WG21 P0980R0. Making std::string constexpr, http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2018/p0980r0.pdf
+WG21 P0980R0 - Making std::string constexpr - http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2018/p0980r0.pdf
 2. <a name="P1657"></a>
-WG21 P1657. String substring checking, http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2019/p1657r0.pdf
+WG21 P1657R0 - String substring checking - http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2019/p1657r0.pdf
 3. <a name="python_in"></a>
-Python Language Reference, Expressions, Membership test operations, https://docs.python.org/3/reference/expressions.html#in
+Python3 Language Reference - Expressions, Membership test operations - https://docs.python.org/3/reference/expressions.html#in
 4. <a name="java_string"></a>
-Java™ Standard Edition 10 API. Class String, https://docs.oracle.com/javase/10/docs/api/java/lang/String.html#contains(java.lang.CharSequence)
+Java™ Standard Edition 10 API - Class String - https://docs.oracle.com/javase/10/docs/api/java/lang/String.html#contains(java.lang.CharSequence)
 5. <a name="csharp_string"></a>
-.NET Core 2.2 API. String.Contains Method, https://docs.microsoft.com/en-us/dotnet/api/system.string.contains?view=netcore-2.2
+.NET Core 2.2 API - String.Contains Method - https://docs.microsoft.com/en-us/dotnet/api/system.string.contains?view=netcore-2.2
 6. <a name="rust_string"></a>
-Rust 1.0 API. Struct std::string::String, https://doc.rust-lang.org/std/string/struct.String.html#method.contains
+Rust 1.0 API - Struct std::string::String - https://doc.rust-lang.org/std/string/struct.String.html#method.contains
 7. <a name="qstring"></a>
-Qt 5.12 documentation. QString Class, https://doc.qt.io/qt-5/qstring.html#contains
+Qt 5.12 documentation - QString Class - https://doc.qt.io/qt-5/qstring.html#contains
 8. <a name="boost_contains"></a>
-Boost 1.70.0 documentation. boost\::algorithm\::contains function, https://www.boost.org/doc/libs/1_70_0/doc/html/boost/algorithm/contains.html
+Boost 1.70.0 documentation - boost\::algorithm\::contains function - https://www.boost.org/doc/libs/1_70_0/doc/html/boost/algorithm/contains.html
 9. <a name="contains_so"></a>
-StackOverflow. C++ string contains, https://stackoverflow.com/questions/2340281/check-if-a-string-contains-a-string-in-c/2340309#2340309
+StackOverflow - C++ string contains - https://stackoverflow.com/questions/2340281/check-if-a-string-contains-a-string-in-c/2340309#2340309
 10. <a name="string_checks"></a>
-WG21 P0457R2. String Prefix and Suffix Checking, http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2017/p0457r2
+WG21 P0457R2 - String Prefix and Suffix Checking - http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2017/p0457r2
 11. <a name="boost_icontains"></a>
-Boost algorithm library. https://www.boost.org/doc/libs/1_70_0/doc/html/boost/algorithm/icontains.html
+Boost 1.70.0 documentation - boost\::algorithm\::icontains function - https://www.boost.org/doc/libs/1_70_0/doc/html/boost/algorithm/icontains.html

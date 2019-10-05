@@ -292,16 +292,17 @@
 </head>
 <body>
 <p>Document number: P1679R1<br />
-Date: 2019-07-18<br />
+Date: 2019-10-03<br />
 Project: WG21, Library Working Group<br />
-Author: Wim Leflere <a href="mailto:wim.leflere@gmail.com">wim.leflere@gmail.com</a></p>
+Authors: Wim Leflere <a href="mailto:wim.leflere@gmail.com">wim.leflere@gmail.com</a>, Paul Fee <a href="mailto:paul.f.fee@gmail.com">paul.f.fee@gmail.com</a></p>
 <h1 id="string-contains-function">String Contains function</h1>
 <h2 id="1-abstract">1. Abstract</h2>
 <p>This paper proposes to add member function <code>contains</code> to class templates basic_string and basic_string_view. This function checks, whether or not a string contains a given substring.</p>
 <h2 id="2-history">2. History</h2>
 <h3 id="22-r1">2.2. R1</h3>
 <p>Wording added<br />
-Made all functions constexpr, after <code>std::string</code> was made constexpr <a href="#constexpr_string"><sup>1</sup></a></p>
+Made all functions constexpr, after <code>std::string</code> was made constexpr <a href="#constexpr_string"><sup>1</sup></a><br />
+Merged content from P1657R0 <a href="#P1657"><sup>2</sup></a></p>
 <h3 id="21-r0">2.1. R0</h3>
 <p>Initial version</p>
 <h2 id="3-motivation">3. Motivation</h2>
@@ -309,18 +310,29 @@ Made all functions constexpr, after <code>std::string</code> was made constexpr 
 <h3 id="31-other-standard-libraries">3.1. Other (standard) libraries</h3>
 <p>Standard libraries of many other programming languages include routines for performing such a check, for example:</p>
 <ul>
-<li>Java: class String contains method <a href="#java_string"><sup>2</sup></a></li>
-<li>C#: class String Contains method <a href="#csharp_string"><sup>3</sup></a></li>
-<li>Rust: class string contains method <a href="#rust_string"><sup>4</sup></a></li>
+<li>Python: operator <code>in</code>, which calls an object's <code>__contains__(self, item)</code> method <a href="#python_in"><sup>3</sup></a></li>
+<li>Java: class String <code>contains</code> method <a href="#java_string"><sup>4</sup></a></li>
+<li>C#: class String <code>Contains</code> method <a href="#csharp_string"><sup>5</sup></a></li>
+<li>Rust: class string <code>contains</code> method <a href="#rust_string"><sup>6</sup></a></li>
 </ul>
 <p>And so on.</p>
-<p>Also, some C++ libraries (other than the standard library) that implement a string type include such methods.<br />
-For example, Qt library has classes QString <a href="#qstring"><sup>5</sup></a> and QStringRef (analogous to std::string_view) which have contains member functions.</p>
-<p>The teachability of C++ for people coming from other languages might improve, because they are already familiar with the <code>contains</code> function in a string type.</p>
-<h3 id="32-why-not-find--npos">3.2. Why not find != npos?</h3>
-<p>The 'standard' <a href="#contains_so"><sup>6</sup></a> way of checking if a string contains a substring is to use the <code>find</code> member function.</p>
+<p>Also, some C++ libraries (other than the standard library) that implement a string type include such methods. For example, Qt library has classes QString <a href="#qstring"><sup>7</sup></a> and QStringRef (analogous to std::string_view) which have contains member functions.</p>
+<p>C++ will be easier to teach to people coming from other languages as they may already be familiar with the <code>contains</code> method in the other language's string class.</p>
+<h3 id="32-existing-substring-checks">3.2. Existing substring checks</h3>
+<p>A range of options exist for substring checking.</p>
+<p><code>std::string haystack = "no place for needles";</code></p>
+<p>Using the C library:<br />
+<code>if (strstr(haystack.c_str(), "needle"))</code></p>
+<p>Using the C++ standard library:<br />
+<code>if (haystack.find("needle") != std::string::npos)</code></p>
+<p>Using Boost algorithms library <a href="#boost_contains"><sup>8</sup></a>:<br />
+<code>if (boost::contains(haystack, "needle"))</code></p>
+<p>The proposed changes would provide a concise, unambiguous method for substring checking in which the intent is clearly expressed.<br />
+<code>if (haystack.contains("needle"))</code></p>
+<h3 id="33-why-not-find--npos">3.3. Why not find != npos?</h3>
+<p>The 'standard' <a href="#contains_so"><sup>9</sup></a> way of checking if a string contains a substring is to use the <code>find</code> member function.</p>
 <pre><code>if (str.find(substr) != std::string::npos)
-    std::cout &lt;&lt; &quot;found!&quot; &lt;&lt; &#39;\n&#39;;
+    std::cout &lt;&lt; &quot;found!\n&quot;;
 </code></pre>
 <p>But using <code>find</code> requires that one extra step of thinking when writing it.<br />
 You're trying to do something positive (check if contains) but you have to do something negative (check inequality).</p>
@@ -328,24 +340,37 @@ You're trying to do something positive (check if contains) but you have to do so
 Are we looking for the actual position? Or checking if the string contains a substring? Or checking if the string doesn't contain a substring?</p>
 <p>A <code>contains</code> member function would make the intention of the programmer more clear and make the code more readable.</p>
 <pre><code>if (str.contains(substr))
-    std::cout &lt;&lt; &quot;found!&quot; &lt;&lt; &#39;\n&#39;;
+    std::cout &lt;&lt; &quot;found!\n&quot;;
 </code></pre>
 <p>The proposed change would improve teachability of C++ for beginners as the <code>contains</code> function better matches the intention of the programmer. And because it is a simpler construct to write and remember than using <code>find</code>.</p>
-<h3 id="33-three-string-checking-musketeers">3.3. Three string checking Musketeers</h3>
-<p>The string <code>contains</code> function would complete the three string checking musketeers, together with the string prefix and suffix check, <code>starts_with</code> and <code>ends_with</code> <a href="#string_checks"><sup>7</sup></a>.</p>
+<h3 id="34-three-string-checking-musketeers">3.4. Three string checking Musketeers</h3>
+<p>The string <code>contains</code> function would complete the three string checking musketeers, together with the string prefix and suffix check, <code>starts_with</code> and <code>ends_with</code> <a href="#string_checks"><sup>10</sup></a>.</p>
 <h2 id="4-design-considerations">4. Design considerations</h2>
-<h3 id="41-member-function-vs-free-function">4.1. Member function vs free function</h3>
-<p>This proposal adds member function <code>contains</code> to class templates basic_string and basic_string_view.<br />
-Another considered option was to add a free function <code>contains</code> to namespace std, as in Boost <a href="#boost_contains"><sup>8</sup></a>.<br />
-The drawback of a free function is that the order of parameters of a free function is ambiguous, <code>contains(string, substring)</code> vs <code>contains(substring, string)</code>.</p>
-<h3 id="42-overload-set">4.2. Overload set</h3>
-<p>Qt offers the following overload set (for QString and QStringRef):</p>
-<pre><code>bool contains(const QString &amp;str, Qt::CaseSensitivity cs = ...) const
-bool contains(QChar ch, Qt::CaseSensitivity cs = ...) const
-bool contains(QLatin1String str, Qt::CaseSensitivity cs = ...) const
-bool contains(const QStringRef &amp;str, Qt::CaseSensitivity cs = ...) const
+<h3 id="41-standard-library-vs-core-language-change">4.1 Standard library vs core language change</h3>
+<p>Python uses the <code>in</code> operator, such as:</p>
+<pre><code>if &#39;needle&#39; in haystack:
 </code></pre>
-<p>This proposal includes the following overloads:</p>
+<p>Adopting a similar approach in C++ would involve a new keyword. A new keyword risks breaking backwards compatibility with code already using <code>in</code> for other purposes, such as variable names. Hence changes to the standard library are preferred.</p>
+<h3 id="42-member-function-vs-free-function">4.2. Member function vs free function</h3>
+<p>This proposal adds member function <code>contains</code> to class templates basic_string and basic_string_view.<br />
+Another option considered was to add a free function <code>contains</code> to namespace std, as in Boost <a href="#boost_contains"><sup>8</sup></a>.<br />
+The drawback of a free function is that the order of parameters of a free function is ambiguous, <code>contains(string, substring)</code> vs <code>contains(substring, string)</code>.</p>
+<p>A member function offers consistency with other popular languages, such as Java, C# and Rust. It's also consistent with <code>starts_with</code> and <code>ends_with</code> <a href="#string_checks"><sup>10</sup></a>.</p>
+<h3 id="43-stringcontains-vs-mapcontains">4.3 string::contains vs map::contains</h3>
+<p>Containers such as <code>set</code> and <code>map</code> have a <code>contains</code> method. For <code>multiset</code> and <code>multimap</code> containers, this offers a performance boost over the <code>count</code> method since <code>contains</code> can return on the first match. With <code>set</code> and <code>map</code>, the benefits are API consistency with <code>multiset</code> and <code>multimap</code> along with clearer expression of intent by returning a bool rather than a count.</p>
+<pre><code>std::set&lt;foo&gt; haystack;
+if (haystack.count(needle)) { /* found */ }
+if (haystack.contains(needle)) { /* clearly found */ }
+</code></pre>
+<p>The proposed <code>contains</code> method for substring checks is not directly analogous to the container operation. Rather than search for a member within the container, a <code>contains</code> operation on a string means to search for a substring.</p>
+<p>Since the proposed method is being called on a string (or string_view) object, the context is clear. The same method name reuse can be seen with the <code>find</code> method provided by both containers and string objects. Likewise, the Python <code>in</code> operator performs substring searches on string and membership searches on containers.</p>
+<h3 id="44-case-insensitivity">4.4. Case insensitivity</h3>
+<p>The <code>starts_with</code>, <code>ends_with</code> and <code>find</code> methods do not have any case awareness. Likewise the proposed <code>contains</code> member function is also case sensitive.</p>
+<p>Some libraries offer case insensitive searches. For example, Boost string algorithms provides <code>icontains</code> <a href="#boost_icontains"><sup>11</sup></a>.</p>
+<p>Qt's <code>QString::contains</code> takes a parameter that defaults to case sensitive, but allows case insensitivity to be specified.</p>
+<p>However, case sensitivity is a complex topic for character sets beyond ASCII. Therefore the scope of this proposal is limited to case sensitive substring checks.</p>
+<h3 id="45-overload-set">4.5 Overload set</h3>
+<p>The <code>starts_with</code> and <code>ends_with</code> methods each have three overloads. This proposal has the same set of overloads:</p>
 <pre><code>// basic_string:
 constexpr bool contains(basic_string_view&lt;charT, traits&gt; str) const noexcept;
 constexpr bool contains(charT ch) const noexcept;
@@ -356,6 +381,7 @@ constexpr bool contains(basic_string_view&lt;charT, traits&gt; str) const noexce
 constexpr bool contains(charT ch) const noexcept;
 constexpr bool contains(const charT* str) const;
 </code></pre>
+<p>An overload accepting a <code>basic_string</code> is not required since <code>basic_string</code> has a non-explicit conversion operator to <code>basic_string_view</code>.</p>
 <h2 id="5-wording">5. Wording</h2>
 <h3 id="51-basic_string">5.1. basic_string</h3>
 <p>In [basic.string], add:</p>
@@ -363,8 +389,8 @@ constexpr bool contains(const charT* str) const;
 constexpr bool contains(charT x) const noexcept;
 constexpr bool contains(const charT* x) const;
 </code></pre>
-<p>After [string::ends_with], add:</p>
-<pre><code>basic_string::contains [string::contains]
+<p>After [string.ends.with], add:</p>
+<pre><code>basic_string::contains [string.contains]
 
 constexpr bool contains(basic_string_view&lt;charT, traits&gt; x) const noexcept;
 constexpr bool contains(charT x) const noexcept;
@@ -389,14 +415,17 @@ constexpr bool contains(const charT* x) const;
 <p>Effects: Equivalent to: <code>return contains(basic_string_view(x));</code></p>
 <h2 id="6-references">6. References</h2>
 <ol>
-<li><a name="constexpr_string"></a> WG21 P0980R0. Making std::string constexpr, <a href="http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2018/p0980r0.pdf">http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2018/p0980r0.pdf</a></li>
-<li><a name="java_string"></a> Java™ Standard Edition 10 API. Class String, <a href="https://docs.oracle.com/javase/10/docs/api/java/lang/String.html#contains(java.lang.CharSequence)">https://docs.oracle.com/javase/10/docs/api/java/lang/String.html#contains(java.lang.CharSequence)</a></li>
-<li><a name="csharp_string"></a> .NET Core 2.2 API. String.Contains Method, <a href="https://docs.microsoft.com/en-us/dotnet/api/system.string.contains?view=netcore-2.2">https://docs.microsoft.com/en-us/dotnet/api/system.string.contains?view=netcore-2.2</a></li>
-<li><a name="rust_string"></a> Rust 1.0 API. Struct std::string::String, <a href="https://doc.rust-lang.org/std/string/struct.String.html#method.contains">https://doc.rust-lang.org/std/string/struct.String.html#method.contains</a></li>
-<li><a name="qstring"></a> Qt 5.12 documentation. QString Class, <a href="https://doc.qt.io/qt-5/qstring.html#contains">https://doc.qt.io/qt-5/qstring.html#contains</a></li>
-<li><a name="contains_so"></a> StackOverflow. C++ string contains, <a href="https://stackoverflow.com/questions/2340281/check-if-a-string-contains-a-string-in-c/2340309#2340309">https://stackoverflow.com/questions/2340281/check-if-a-string-contains-a-string-in-c/2340309#2340309</a></li>
-<li><a name="string_checks"></a> WG21 P0457R2. String Prefix and Suffix Checking, <a href="http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2017/p0457r2">http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2017/p0457r2</a></li>
-<li><a name="boost_contains"></a> Boost 1.70.0 documentation. boost::algorithm::contains function, <a href="https://www.boost.org/doc/libs/1_70_0/doc/html/boost/algorithm/contains.html">https://www.boost.org/doc/libs/1_70_0/doc/html/boost/algorithm/contains.html</a></li>
+<li><a name="constexpr_string"></a> WG21 P0980R0 - Making std::string constexpr - <a href="http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2018/p0980r0.pdf">http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2018/p0980r0.pdf</a></li>
+<li><a name="P1657"></a> WG21 P1657R0 - String substring checking - <a href="http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2019/p1657r0.pdf">http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2019/p1657r0.pdf</a></li>
+<li><a name="python_in"></a> Python3 Language Reference - Expressions, Membership test operations - <a href="https://docs.python.org/3/reference/expressions.html#in">https://docs.python.org/3/reference/expressions.html#in</a></li>
+<li><a name="java_string"></a> Java™ Standard Edition 10 API - Class String - <a href="https://docs.oracle.com/javase/10/docs/api/java/lang/String.html#contains(java.lang.CharSequence)">https://docs.oracle.com/javase/10/docs/api/java/lang/String.html#contains(java.lang.CharSequence)</a></li>
+<li><a name="csharp_string"></a> .NET Core 2.2 API - String.Contains Method - <a href="https://docs.microsoft.com/en-us/dotnet/api/system.string.contains?view=netcore-2.2">https://docs.microsoft.com/en-us/dotnet/api/system.string.contains?view=netcore-2.2</a></li>
+<li><a name="rust_string"></a> Rust 1.0 API - Struct std::string::String - <a href="https://doc.rust-lang.org/std/string/struct.String.html#method.contains">https://doc.rust-lang.org/std/string/struct.String.html#method.contains</a></li>
+<li><a name="qstring"></a> Qt 5.12 documentation - QString Class - <a href="https://doc.qt.io/qt-5/qstring.html#contains">https://doc.qt.io/qt-5/qstring.html#contains</a></li>
+<li><a name="boost_contains"></a> Boost 1.70.0 documentation - boost::algorithm::contains function - <a href="https://www.boost.org/doc/libs/1_70_0/doc/html/boost/algorithm/contains.html">https://www.boost.org/doc/libs/1_70_0/doc/html/boost/algorithm/contains.html</a></li>
+<li><a name="contains_so"></a> StackOverflow - C++ string contains - <a href="https://stackoverflow.com/questions/2340281/check-if-a-string-contains-a-string-in-c/2340309#2340309">https://stackoverflow.com/questions/2340281/check-if-a-string-contains-a-string-in-c/2340309#2340309</a></li>
+<li><a name="string_checks"></a> WG21 P0457R2 - String Prefix and Suffix Checking - <a href="http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2017/p0457r2">http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2017/p0457r2</a></li>
+<li><a name="boost_icontains"></a> Boost 1.70.0 documentation - boost::algorithm::icontains function - <a href="https://www.boost.org/doc/libs/1_70_0/doc/html/boost/algorithm/icontains.html">https://www.boost.org/doc/libs/1_70_0/doc/html/boost/algorithm/icontains.html</a></li>
 </ol>
 </body>
 </html>

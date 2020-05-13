@@ -1,20 +1,22 @@
-Document number: P1679R1  
-Date: 2019-10-03  
+Document number: P1679R2  
+Date: 2020-05-13  
 Project: WG21, Library Working Group  
 Authors: Wim Leflere <wim.leflere@gmail.com>, Paul Fee <paul.f.fee@gmail.com>  
 
-# String Contains function
+# string contains function
 
 ## 1. Abstract
 This paper proposes to add member function `contains` to class templates basic_string and basic_string_view.
 This function checks, whether or not a string contains a given substring.
 
 ## 2. History
+### 2.1. R2
+Small wording update based on LWG feedback
 ### 2.2. R1
 Wording added  
 Made all functions constexpr, after `std::string` was made constexpr [<sup>1</sup>](#constexpr_string)  
 Merged content from P1657R0 [<sup>2</sup>](#P1657)  
-### 2.1. R0
+### 2.3. R0
 Initial version
 
 ## 3. Motivation
@@ -154,21 +156,21 @@ Effects: Equivalent to: `return basic_string_view<charT, traits>(data(), size())
 ### 5.2. basic_string_view
 In [string.view.template], add:
 ```
-constexpr bool contains(basic_string_view<charT, traits> x) const noexcept;
+constexpr bool contains(basic_string_view x) const noexcept;
 constexpr bool contains(charT x) const noexcept;
 constexpr bool contains(const charT* x) const;
 ```
 
 In [string.view.ops], add:
 ```
-constexpr bool contains(basic_string_view<charT, traits> x) const noexcept;
+constexpr bool contains(basic_string_view x) const noexcept;
 ```
 Effects: Equivalent to: `return find(x) != npos;`
 
 ```
 constexpr bool contains(charT x) const noexcept;
 ```
-Effects: Equivalent to: `return contains(basic_string_view(&x, 1));`
+Effects: Equivalent to: `return contains(basic_string_view(addressof(x), 1));`
 
 ```
 constexpr bool contains(const charT* x) const;

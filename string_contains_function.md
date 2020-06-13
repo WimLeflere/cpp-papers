@@ -11,7 +11,8 @@ This function checks, whether or not a string contains a given substring.
 
 ## 2. History
 ### 2.1. R3
-Small wording update based on LWG feedback
+Small wording update based on LWG feedback  
+Rephrased case sensitivity section
 ### 2.2. R2
 Small wording update based on LWG feedback
 ### 2.3. R1
@@ -111,10 +112,12 @@ The proposed `contains` method for substring checks is not directly analogous to
 
 Since the proposed method is being called on a string (or string_view) object, the context is clear.  The same method name reuse can be seen with the `find` method provided by both containers and string objects.  Likewise, the Python `in` operator performs substring searches on string and membership searches on containers.
 
-### 4.4. Case insensitivity
-The `starts_with`, `ends_with` and `find` methods do not have any case awareness.  Likewise the proposed `contains` member function is also case sensitive.
+### 4.4. Case sensitivity
+The `starts_with`, `ends_with` and `find` methods are case sensitive.  
+Likewise the proposed `contains` member function is also case sensitive.
 
-Some libraries offer case insensitive searches.  For example, Boost string algorithms provides `icontains` [<sup>11</sup>](#boost_icontains).
+Some libraries offer case insensitive searches.  
+For example, Boost string algorithms provides `icontains` [<sup>11</sup>](#boost_icontains).
 
 Qt's `QString::contains` takes a parameter that defaults to case sensitive, but allows case insensitivity to be specified.
 

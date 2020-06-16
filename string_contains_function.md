@@ -12,7 +12,8 @@ This function checks, whether or not a string contains a given substring.
 ## 2. History
 ### 2.1. R3
 Small wording update based on LWG feedback  
-Rephrased case sensitivity section
+Rephrased case sensitivity section  
+Feature test macro added
 ### 2.2. R2
 Small wording update based on LWG feedback
 ### 2.3. R1
@@ -173,6 +174,13 @@ constexpr bool contains(charT x) const noexcept;
 constexpr bool contains(const charT* x) const;
 ```
 Effects: Equivalent to: `return find(x) != npos;`
+
+### 5.3. Feature test macro
+In [version.syn], add:
+```
+#define __cpp_lib_string_contains YYYYMML // also in <string>, <string_view>
+```
+Adjust the placeholder value as needed so as to denote this proposal’s date of adoption.
 
 ## 6. References
 1. <a name="constexpr_string"></a>

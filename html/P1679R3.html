@@ -303,7 +303,8 @@ Authors: Wim Leflere <a href="mailto:wim.leflere@gmail.com">wim.leflere@gmail.co
 <h2 id="2-history">2. History</h2>
 <h3 id="21-r3">2.1. R3</h3>
 <p>Small wording update based on LWG feedback<br />
-Rephrased case sensitivity section</p>
+Rephrased case sensitivity section<br />
+Feature test macro added</p>
 <h3 id="22-r2">2.2. R2</h3>
 <p>Small wording update based on LWG feedback</p>
 <h3 id="23-r1">2.3. R1</h3>
@@ -418,6 +419,11 @@ constexpr bool contains(charT x) const noexcept;
 constexpr bool contains(const charT* x) const;
 </code></pre>
 <p>Effects: Equivalent to: <code>return find(x) != npos;</code></p>
+<h3 id="53-feature-test-macro">5.3. Feature test macro</h3>
+<p>In [version.syn], add:</p>
+<pre><code>#define __cpp_lib_string_contains YYYYMML // also in &lt;string&gt;, &lt;string_view&gt;
+</code></pre>
+<p>Adjust the placeholder value as needed so as to denote this proposal’s date of adoption.</p>
 <h2 id="6-references">6. References</h2>
 <ol>
 <li><a name="constexpr_string"></a> WG21 P0980R0 - Making std::string constexpr - <a href="http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2018/p0980r0.pdf">http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2018/p0980r0.pdf</a></li>
